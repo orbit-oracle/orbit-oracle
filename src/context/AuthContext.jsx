@@ -1,16 +1,16 @@
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext, useState } from 'react'
 
-const AuthContext = createContext(null)
+export const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null)
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    const stored = localStorage.getItem('oo_user')
-    if (stored) setUser(JSON.parse(stored))
-    setLoading(false)
-  }, [])
+  // ✅ initialize state directly from localStorage — no useEffect needed
+  const [user, setUser]       = useState(() => {
+    try {
+      const stored = localStorage.getItem('oo_user')
+      return stored ? JSON.parse(stored) : null
+    } catch { return null }
+  })
+  const [loading, setLoading] = useState(false)
 
   const login = (userData, token) => {
     localStorage.setItem('oo_user', JSON.stringify(userData))

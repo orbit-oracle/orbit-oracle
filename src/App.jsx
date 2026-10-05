@@ -12,6 +12,7 @@ import TimelinePage  from './pages/TimelinePage'
 import AuditLogPage  from './pages/AuditLogPage'
 import HistoryPage   from './pages/HistoryPage'
 import NotFoundPage  from './pages/NotFoundPage'
+import TelemetryPage from './pages/TelemetryPage'
 
 function AppShell({ children }) {
   return (
@@ -36,6 +37,7 @@ function Inner() {
       <Route path="/audit"     element={<ProtectedRoute><AppShell><AuditLogPage /></AppShell></ProtectedRoute>} />
       <Route path="/history"   element={<ProtectedRoute><AppShell><HistoryPage /></AppShell></ProtectedRoute>} />
       <Route path="*"          element={<NotFoundPage />} />
+      <Route path="/telemetry" element={<ProtectedRoute><AppShell><TelemetryPage /></AppShell></ProtectedRoute>} />
     </Routes>
   )
 }

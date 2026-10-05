@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef } from 'react'       //useEffect 
 import { Send } from 'lucide-react'
 
 export default function ChatBox({ onSend, loading }) {

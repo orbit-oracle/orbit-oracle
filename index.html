@@ -1,13 +1,61 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>orbit-oracle-frontend</title>
+    <meta name="theme-color" content="#03050b" />
+
+    <!-- SEO / Description -->
+    <meta name="description"
+      content="Orbit Oracle — Mission Operations Copilot with Evidence-Grounded Decisions. Queries mission logs, telemetry summaries, procedures and incident history. Advisory only." />
+    <meta name="keywords"
+      content="mission operations, spacecraft, copilot, RAG, telemetry, anomaly, evidence, AI assistant, TECHFEST" />
+    <meta name="author" content="Team Orbit Oracle — Aditya Kadage, Sneha Dhonde" />
+
+    <!-- Open Graph (for sharing) -->
+    <meta property="og:title"       content="Orbit Oracle — Mission Operations Copilot" />
+    <meta property="og:description" content="Evidence-grounded AI assistant for spacecraft operators. Advisory only." />
+    <meta property="og:type"        content="website" />
+
+    <!-- Favicon — inline SVG as data URI (no extra file needed) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,
+      <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'>
+        <circle cx='32' cy='32' r='28' fill='%230b3a6b'/>
+        <circle cx='32' cy='32' r='16' fill='%2322d3ee' opacity='0.9'/>
+        <circle cx='25' cy='25' r='5'  fill='white'    opacity='0.7'/>
+      </svg>" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap"
+      rel="stylesheet" />
+
+    <!-- Prevent FOUC flash on dark background -->
+    <style>
+      html, body { background: #03050b; }
+    </style>
+
+    <title>Orbit Oracle — Mission Operations Copilot</title>
   </head>
   <body>
     <div id="root"></div>
+
+    <!-- No-JS fallback -->
+    <noscript>
+      <div style="
+        display:flex; align-items:center; justify-content:center;
+        height:100vh; background:#03050b; color:#e7eef9;
+        font-family:sans-serif; text-align:center; padding:20px;
+      ">
+        <div>
+          <div style="font-size:48px; margin-bottom:16px;">🛰</div>
+          <h2 style="margin-bottom:8px;">Orbit Oracle requires JavaScript</h2>
+          <p style="color:#93a3bc;">Please enable JavaScript to run the Mission Operations Copilot.</p>
+        </div>
+      </div>
+    </noscript>
+
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

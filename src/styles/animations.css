@@ -1,0 +1,138 @@
+/* ─── Core keyframes ─────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-18px); }
+  to   { opacity: 1; transform: translateX(0);     }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(18px); }
+  to   { opacity: 1; transform: translateX(0);    }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1);    }
+  50%       { transform: scale(1.07);}
+}
+
+@keyframes ping {
+  0%       { transform: scale(1);   opacity: 1; }
+  75%, 100%{ transform: scale(2.2); opacity: 0; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1;   }
+  50%       { opacity: 0.35;}
+}
+
+@keyframes shimmer {
+  from { background-position:  200% 0; }
+  to   { background-position: -200% 0; }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(34,211,238,0.2); }
+  50%       { box-shadow: 0 0 45px rgba(34,211,238,0.5); }
+}
+
+@keyframes orbit {
+  from { transform: rotate(0deg)   translateX(54px) rotate(0deg);   }
+  to   { transform: rotate(360deg) translateX(54px) rotate(-360deg);}
+}
+
+@keyframes draw-line {
+  from { stroke-dashoffset: 1000; }
+  to   { stroke-dashoffset: 0;    }
+}
+
+@keyframes count-up {
+  from { opacity: 0; transform: translateY(8px);  }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+@keyframes card-appear {
+  from { opacity: 0; transform: translateY(10px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);    }
+}
+
+@keyframes border-glow {
+  0%, 100% { border-color: var(--line); }
+  50%       { border-color: var(--cyan);}
+}
+
+/* ─── Utility animation classes ─────────────────────── */
+.anim-fade-up    { animation: fadeUp       0.4s ease both; }
+.anim-fade-in    { animation: fadeIn       0.35s ease both; }
+.anim-slide-left { animation: slideInLeft  0.4s ease both; }
+.anim-card       { animation: card-appear  0.45s ease both; }
+.anim-pulse      { animation: pulse        2s ease-in-out infinite; }
+.anim-breathe    { animation: breathe      4s ease-in-out infinite; }
+.anim-spin       { animation: spin         1s linear infinite; }
+.anim-glow       { animation: glow-pulse   3s ease-in-out infinite; }
+.anim-ping       { animation: ping         2s ease-out infinite; }
+
+/* Staggered children */
+.stagger > *:nth-child(1) { animation-delay: 0ms;   }
+.stagger > *:nth-child(2) { animation-delay: 80ms;  }
+.stagger > *:nth-child(3) { animation-delay: 160ms; }
+.stagger > *:nth-child(4) { animation-delay: 240ms; }
+.stagger > *:nth-child(5) { animation-delay: 320ms; }
+
+/* ─── Skeleton loader ───────────────────────────────── */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--bg3)   25%,
+    var(--line)  50%,
+    var(--bg3)   75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8px;
+}
+.skeleton-text  { height: 12px; margin-bottom: 8px; }
+.skeleton-title { height: 20px; margin-bottom: 12px; width: 60%; }
+.skeleton-block { height: 80px; }
+
+/* ─── Timeline line draw ────────────────────────────── */
+.timeline-line {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: draw-line 1.2s ease forwards;
+}
+
+/* ─── Transition helpers ────────────────────────────── */
+.transition-all   { transition: all 0.2s ease; }
+.transition-color { transition: color 0.18s, background 0.18s, border-color 0.18s; }
+.transition-transform { transition: transform 0.2s ease; }
+
+/* ─── Hover lift card ───────────────────────────────── */
+.card-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card-hover:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+}
+
+/* ─── Respect reduced motion ────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration:        0.01ms !important;
+    animation-iteration-count: 1      !important;
+    transition-duration:       0.01ms !important;
+  }
+}
