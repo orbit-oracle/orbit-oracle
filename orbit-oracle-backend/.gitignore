@@ -5,3 +5,18 @@ chroma_db/
 .venv/
 *.egg-info/
 dist/
+
+# Python virtual environment
+venv/
+.venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Environment variables / secrets
+.env
+.env.*
+
+# ChromaDB local data
+chroma_db/
