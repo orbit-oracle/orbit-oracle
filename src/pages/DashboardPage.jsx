@@ -1,5 +1,10 @@
 import StatusBanner from '../components/dashboard/StatusBanner'
 import InsightCards from '../components/dashboard/InsightCards'
+import AnomalyCenter from '../components/dashboard/AnomalyCenter'
+import AlertsPanel from '../components/dashboard/AlertsPanel'
+import SpacecraftHealth from '../components/dashboard/SpacecraftHealth'
+import DataSources from '../components/dashboard/DataSources'
+import MissionKnowledge from '../components/dashboard/MissionKnowledge'
 import { useAuth } from '../context/AuthContext'
 import Button from '../components/ui/Button'
 import { useNavigate } from 'react-router-dom'
@@ -47,6 +52,18 @@ export default function DashboardPage() {
             <div style={{ fontSize:13, color:'var(--muted)', marginTop:6 }}>{s.l}</div>
           </div>
         ))}
+      </div>
+
+      {/* ---------- NEW: operations section ---------- */}
+      <div style={{ fontSize:12, color:'var(--muted)', fontFamily:'var(--mono)', letterSpacing:'0.08em', margin:'32px 0 14px' }}>
+        MISSION OPERATIONS
+      </div>
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(380px,1fr))', gap:16 }}>
+        <AnomalyCenter />
+        <AlertsPanel />
+        <SpacecraftHealth />
+        <DataSources />
+        <MissionKnowledge />
       </div>
     </div>
   )
