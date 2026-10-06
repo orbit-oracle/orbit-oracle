@@ -1,37 +1,43 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
+import { authAPI } from '../../services/api'
 import Button from '../ui/Button'
 import { Eye, EyeOff, Mail, Lock, Satellite } from 'lucide-react'
 
 export default function LoginForm() {
-  const [form, setForm]   = useState({ email: '', password: '' })
-  const [show, setShow]   = useState(false)
-  const [err, setErr]     = useState('')
-  const [busy, setBusy]   = useState(false)
+  const [form, setForm]       = useState({ email: '', password: '' })
+  const [show, setShow]       = useState(false)
+  const [err, setErr]         = useState('')
+  const [busy, setBusy]       = useState(false)
   const [focused, setFocused] = useState('')
-  const { login }         = useAuth()
-  const nav               = useNavigate()
+  const { login }             = useAuth()
+  const nav                   = useNavigate()
 
   const submit = async e => {
-    e.preventDefault()
-    setErr('')
-    if (!form.email || !form.password) { setErr('Please fill all fields.'); return }
-    setBusy(true)
-    try {
-      // Replace this block with: const res = await authAPI.login(form)
-      await new Promise(r => setTimeout(r, 1200))
-      login(
-        { name: form.email.split('@')[0], email: form.email, role: 'Operator' },
-        'demo-token-123'
-      )
-      nav('/dashboard')
-    } catch (e) {
-      setErr('Invalid credentials. Please try again.')
-    } finally {
-      setBusy(false)
+  e.preventDefault()
+  setErr('')
+  if (!form.email || !form.password) { setErr('Please fill all fields.'); return }
+  setBusy(true)
+  try {
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: form.email, password: form.password })
+    })
+    const data = await res.json()
+    if (!res.ok) {
+      setErr(data.detail || 'Invalid credentials.')
+      return
     }
+    login(data.user, data.access_token)
+    nav('/dashboard')
+  } catch {
+    setErr('Cannot reach the backend. Make sure it is running on port 8000.')
+  } finally {
+    setBusy(false)
   }
+}
 
   const field = (id, label, type, Icon, placeholder) => {
     const active = focused === id
@@ -80,8 +86,6 @@ export default function LoginForm() {
 
   return (
     <div style={{ width: '100%', maxWidth: 420 }}>
-
-      {/* Header */}
       <div style={{ textAlign: 'center', marginBottom: 36 }}>
         <div style={{
           width: 64, height: 64, borderRadius: '50%',
@@ -98,12 +102,10 @@ export default function LoginForm() {
         </p>
       </div>
 
-      {/* Form */}
       <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
         {field('email',    'Email address', 'email',    Mail, 'operator@mission.space')}
         {field('password', 'Password',      'password', Lock, '••••••••')}
 
-        {/* Error */}
         {err && (
           <div style={{
             background: 'rgba(248,113,113,0.1)', border: '1px solid var(--red)',
@@ -114,7 +116,6 @@ export default function LoginForm() {
           </div>
         )}
 
-        {/* Forgot */}
         <div style={{ textAlign: 'right', marginTop: -6 }}>
           <span style={{ fontSize: 13, color: 'var(--cyan)', cursor: 'pointer' }}>
             Forgot password?
@@ -137,7 +138,6 @@ export default function LoginForm() {
         </Button>
       </form>
 
-      {/* Divider */}
       <div style={{
         display: 'flex', alignItems: 'center', gap: 12,
         margin: '24px 0', color: 'var(--muted)', fontSize: 13
@@ -147,7 +147,6 @@ export default function LoginForm() {
         <div style={{ flex: 1, height: 1, background: 'var(--line)' }} />
       </div>
 
-      {/* Demo login */}
       <button
         type="button"
         onClick={() => setForm({ email: 'demo@mission.space', password: 'demo1234' })}
@@ -172,7 +171,6 @@ export default function LoginForm() {
         </Link>
       </p>
 
-      {/* Advisory notice */}
       <div style={{
         marginTop: 32, padding: '10px 14px',
         border: '1px solid var(--line)', borderRadius: 10,

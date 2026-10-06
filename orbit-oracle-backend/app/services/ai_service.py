@@ -29,9 +29,14 @@ def _parse(raw: str) -> dict:
 async def call_ai(question: str, context: str) -> dict:
     user_message = f"Question: {question}\n\nEvidence:\n{context}"
 
-    if settings.ai_provider == "gemini":
-        return await _call_gemini(user_message)
-    return await _call_groq(user_message)
+    try:
+        if settings.ai_provider == "gemini":
+            return await _call_gemini(user_message)
+        return await _call_groq(user_message)
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        raise
 
 async def _call_gemini(user_message: str) -> dict:
     import google.generativeai as genai
@@ -51,7 +56,7 @@ async def _call_groq(user_message: str) -> dict:
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user",   "content": user_message},
         ],
-        model="llama3-8b-8192",
+        model="openai/gpt-oss-20b",
         temperature=0.1,
     )
     return _parse(chat.choices[0].message.content)

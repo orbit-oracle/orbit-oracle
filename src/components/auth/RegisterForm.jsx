@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
+import { authAPI } from '../../services/api'
 import Button from '../ui/Button'
-import { Eye, EyeOff, Mail, Lock,  Shield } from 'lucide-react'
+import { Eye, EyeOff, Mail, Lock, User, Shield } from 'lucide-react'
 
 const ROLES = ['Operator', 'Reviewer', 'Viewer']
 
@@ -14,46 +15,51 @@ const strengthLabel = pw => {
   if (/[0-9]/.test(pw))         s++
   if (/[^A-Za-z0-9]/.test(pw)) s++
   const map = [
-    { label: 'Too short', color: 'var(--red)',   w: 25 },
-    { label: 'Weak',      color: 'var(--red)',   w: 40 },
-    { label: 'Fair',      color: 'var(--amber)', w: 65 },
-    { label: 'Strong',    color: 'var(--green)', w: 85 },
+    { label: 'Too short',   color: 'var(--red)',   w: 25  },
+    { label: 'Weak',        color: 'var(--red)',   w: 40  },
+    { label: 'Fair',        color: 'var(--amber)', w: 65  },
+    { label: 'Strong',      color: 'var(--green)', w: 85  },
     { label: 'Very strong', color: 'var(--green)', w: 100 },
   ]
   return map[s] || map[0]
 }
 
 export default function RegisterForm() {
-  const [form, setForm]   = useState({ name: '', email: '', password: '', role: 'Operator' })
-  const [show, setShow]   = useState(false)
-  const [err, setErr]     = useState('')
-  const [busy, setBusy]   = useState(false)
+  const [form, setForm]       = useState({ name: '', email: '', password: '', role: 'Operator' })
+  const [show, setShow]       = useState(false)
+  const [err, setErr]         = useState('')
+  const [busy, setBusy]       = useState(false)
   const [focused, setFocused] = useState('')
-  const { login }         = useAuth()
-  const nav               = useNavigate()
+  const { login }             = useAuth()
+  const nav                   = useNavigate()
 
   const pw = strengthLabel(form.password)
 
   const submit = async e => {
-    e.preventDefault()
-    setErr('')
-    if (!form.name || !form.email || !form.password) { setErr('Please fill all fields.'); return }
-    if (form.password.length < 8) { setErr('Password must be at least 8 characters.'); return }
-    setBusy(true)
-    try {
-      // Replace with: await authAPI.register(form)
-      await new Promise(r => setTimeout(r, 1400))
-      login(
-        { name: form.name, email: form.email, role: form.role },
-        'demo-token-456'
-      )
-      nav('/dashboard')
-    } catch {
-      setErr('Registration failed. Please try again.')
-    } finally {
-      setBusy(false)
+  e.preventDefault()
+  setErr('')
+  if (!form.name || !form.email || !form.password) { setErr('Please fill all fields.'); return }
+  if (form.password.length < 8) { setErr('Password must be at least 8 characters.'); return }
+  setBusy(true)
+  try {
+    const res = await fetch('/api/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(form)
+    })
+    const data = await res.json()
+    if (!res.ok) {
+      setErr(data.detail || 'Registration failed.')
+      return
     }
+    login(data.user, data.access_token)
+    nav('/dashboard')
+  } catch {
+    setErr('Cannot reach the backend. Make sure it is running on port 8000.')
+  } finally {
+    setBusy(false)
   }
+}
 
   const field = (id, label, type, Icon, placeholder) => {
     const active = focused === id
@@ -90,7 +96,6 @@ export default function RegisterForm() {
             </button>
           )}
         </div>
-        {/* Password strength bar */}
         {id === 'password' && form.password && (
           <div>
             <div style={{
@@ -112,8 +117,6 @@ export default function RegisterForm() {
 
   return (
     <div style={{ width: '100%', maxWidth: 440 }}>
-
-      {/* Header */}
       <div style={{ textAlign: 'center', marginBottom: 32 }}>
         <div style={{
           width: 64, height: 64, borderRadius: '50%', margin: '0 auto 16px',
@@ -130,11 +133,10 @@ export default function RegisterForm() {
       </div>
 
       <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-        {field('name',     'Full name',  'text',     User, 'Sneha Dhonde')}
-        {field('email',    'Email',      'email',    Mail, 'you@mission.space')}
-        {field('password', 'Password',   'password', Lock, 'min. 8 characters')}
+        {field('name',     'Full name', 'text',     User, 'Sneha Dhonde')}
+        {field('email',    'Email',     'email',    Mail, 'you@mission.space')}
+        {field('password', 'Password',  'password', Lock, 'min. 8 characters')}
 
-        {/* Role selector */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
           <label style={{ fontSize: 13, fontWeight: 600, color: 'var(--muted)',
             display: 'flex', alignItems: 'center', gap: 6 }}>
@@ -159,13 +161,12 @@ export default function RegisterForm() {
             ))}
           </div>
           <div style={{ fontSize: 11, color: 'var(--muted)', paddingLeft: 2 }}>
-            {form.role === 'Operator'  && 'Can ask questions and export timelines.'}
-            {form.role === 'Reviewer'  && 'Can read the audit log and all sessions.'}
-            {form.role === 'Viewer'    && 'Read-only access to shared investigations.'}
+            {form.role === 'Operator' && 'Can ask questions and export timelines.'}
+            {form.role === 'Reviewer' && 'Can read the audit log and all sessions.'}
+            {form.role === 'Viewer'   && 'Read-only access to shared investigations.'}
           </div>
         </div>
 
-        {/* Error */}
         {err && (
           <div style={{
             background: 'rgba(248,113,113,0.1)', border: '1px solid var(--red)',
@@ -175,7 +176,6 @@ export default function RegisterForm() {
           </div>
         )}
 
-        {/* Terms */}
         <div style={{ fontSize: 12, color: 'var(--muted)', lineHeight: 1.6 }}>
           By registering you agree that Orbit Oracle is advisory only and never
           issues real spacecraft commands.

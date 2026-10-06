@@ -3,6 +3,8 @@ Run this once to load sample data into ChromaDB.
 Usage: python -m app.data.seed_chroma
 """
 import sys, os
+import os
+os.environ["ANONYMIZED_TELEMETRY"] = "False" 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 
 from app.database.chroma_client import get_collection
