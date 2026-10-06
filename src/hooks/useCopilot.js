@@ -26,8 +26,15 @@ export function useCopilot() {
       })
       if (!res.ok) throw new Error(`Server error ${res.status}`)
       const data = await res.json()
+
+      if (data.timeline && data.timeline.length > 0) {
+        localStorage.setItem('oo_last_timeline', JSON.stringify(data.timeline))
+      }
+
       setMessages(prev => [...prev, { role: 'ai', content: question, data }])
-    } catch (e) {
+
+    }  
+    catch (e) {
       if (e.name === 'AbortError') return
       setError('Could not reach the copilot. Check your connection and try again.')
       setMessages(prev => [...prev, {

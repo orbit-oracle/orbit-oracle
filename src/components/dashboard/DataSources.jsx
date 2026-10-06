@@ -30,7 +30,7 @@ export default function DataSources() {
     setSources(prev => prev.map(s =>
       s.key === target.current ? { ...s, count: s.count + 1, updated: new Date().toISOString() } : s
     ))
-    setMsg({ text: `${file.name} added.`, error: false })
+    setMsg({ text: `${file.name} received. Connect backend upload API to index it.`, error: false })
   }
 
   return (

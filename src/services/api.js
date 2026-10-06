@@ -39,4 +39,8 @@ export const auditAPI = {
   log: () => api.get('/audit/log'),
 }
 
+export const historyAPI = {
+  getSessions: () => api.get('/audit/log'),
+}
+
 export default api

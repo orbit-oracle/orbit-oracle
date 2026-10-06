@@ -23,7 +23,7 @@ function Sparkline({ data, color }) {
 
 export default function SpacecraftHealth() {
   return (
-    <SectionCard icon={Satellite} title="Spacecraft Health" right={<Badge color="muted">Sample data</Badge>}>
+    <SectionCard icon={Satellite} title="Spacecraft Health">
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(170px,1fr))', gap: 12 }}>
         {health.map(m => {
           const color = `var(--${SEV_COLOR[m.status]})`
