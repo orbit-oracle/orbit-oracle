@@ -18,7 +18,7 @@ export default function TimelinePage() {
         <h1 style={{ fontSize:26, fontWeight:700 }}>Auto-Built Incident Timeline</h1>
         <p style={{ color:'var(--muted)', marginTop:6 }}>Every event is linked to its source. Click a citation to see the original text.</p>
       </div>
-      <div style={{ background:'var(--bg2)', border:'1px solid var(--line)', borderRadius:18, padding:28 }}>
+      <div style={{ background:'var(--bg2)', border:'1px solid var(--line)', borderRadius:18, padding:'clamp(16px, 4vw, 28px)' }}>
         <TimelineView events={events} />
       </div>
     </div>

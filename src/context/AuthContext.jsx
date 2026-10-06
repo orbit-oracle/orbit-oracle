@@ -3,8 +3,7 @@ import { createContext, useContext, useState } from 'react'
 export const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
-  // ✅ initialize state directly from localStorage — no useEffect needed
-  const [user, setUser]       = useState(() => {
+  const [user, setUser] = useState(() => {
     try {
       const stored = localStorage.getItem('oo_user')
       return stored ? JSON.parse(stored) : null
@@ -18,6 +17,13 @@ export function AuthProvider({ children }) {
     setUser(userData)
   }
 
+  // NEW: merge changes into the current user and save them
+  const updateUser = patch => {
+    const next = { ...user, ...patch }
+    localStorage.setItem('oo_user', JSON.stringify(next))
+    setUser(next)
+  }
+
   const logout = () => {
     localStorage.removeItem('oo_user')
     localStorage.removeItem('oo_token')
@@ -25,7 +31,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
+    <AuthContext.Provider value={{ user, login, logout, updateUser, loading }}>
       {children}
     </AuthContext.Provider>
   )

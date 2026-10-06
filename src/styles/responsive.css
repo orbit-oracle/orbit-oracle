@@ -1,0 +1,64 @@
+/* ---------- App shell (desktop) ---------- */
+.app-shell  { display: flex; min-height: 100vh; }
+.app-main   { margin-left: 220px; flex: 1; padding: 32px 36px; min-width: 0; }
+.app-nav    { width: 220px; position: fixed; top: 0; left: 0; bottom: 0; z-index: 100; overflow-y: auto; }
+
+/* Mobile-only pieces are hidden on desktop */
+.app-topbar, .app-backdrop, .nav-close { display: none; }
+
+.copilot-wrap { display: flex; flex-direction: column; height: calc(100vh - 64px); }
+.table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+/* ---------- Tablet and phone ---------- */
+@media (max-width: 900px) {
+  .app-main { margin-left: 0; padding: 72px 16px 16px; }   /* 72px = top bar height + gap */
+
+  /* Sidebar becomes a slide-in drawer, hidden by default */
+  .app-nav {
+    width: 270px; max-width: 86vw; z-index: 200;
+    transform: translateX(-100%);
+    visibility: hidden;                       /* keeps keyboard focus out while closed */
+    transition: transform .25s ease, visibility 0s linear .25s;
+  }
+  .app-nav.open {
+    transform: translateX(0);
+    visibility: visible;
+    box-shadow: 0 0 40px rgba(0, 0, 0, .6);
+    transition: transform .25s ease, visibility 0s;
+  }
+
+  /* Top bar with the open button */
+  .app-topbar {
+    display: flex; align-items: center; gap: 12px;
+    position: fixed; top: 0; left: 0; right: 0; height: 56px; z-index: 90;
+    padding: 0 12px;
+    background: var(--bg2); border-bottom: 1px solid var(--line);
+  }
+
+  /* Dark layer behind the open drawer */
+  .app-backdrop {
+    display: block; position: fixed; inset: 0; z-index: 150;
+    background: rgba(3, 5, 11, .65);
+    opacity: 0; pointer-events: none; transition: opacity .25s ease;
+  }
+  .app-backdrop.open { opacity: 1; pointer-events: auto; }
+
+  .nav-close { display: inline-flex; }
+
+  /* Smaller headings. !important is needed because those sizes are inline styles. */
+  .app-main h1 { font-size: 22px !important; }
+
+  .hide-mobile { display: none !important; }
+
+  /* Copilot page: dvh = the visible height, excluding the phone's browser bars */
+  .copilot-wrap { height: calc(100dvh - 88px); }
+  .copilot-head { gap: 12px !important; padding-bottom: 14px !important; margin-bottom: 14px !important; }
+}
+
+@media (max-width: 480px) {
+  .app-main { padding: 72px 12px 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-nav, .app-backdrop { transition: none; }
+}

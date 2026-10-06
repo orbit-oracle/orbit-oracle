@@ -89,10 +89,11 @@ export default function CopilotPage() {
   const empty = messages.length === 0 && !loading
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 64px)' }}>
+    <div className="copilot-wrap">
+
 
       {/* Header */}
-<div style={{
+<div className="copilot-head" style={{
   display: 'flex',
   alignItems: 'center',
   gap: 18,
@@ -121,7 +122,7 @@ export default function CopilotPage() {
     </div>
   </div>
 
-  <div style={{
+  <div className="hide-mobile" style={{
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-end',

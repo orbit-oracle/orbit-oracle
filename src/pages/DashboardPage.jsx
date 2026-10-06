@@ -58,7 +58,7 @@ export default function DashboardPage() {
       <div style={{ fontSize:12, color:'var(--muted)', fontFamily:'var(--mono)', letterSpacing:'0.08em', margin:'32px 0 14px' }}>
         MISSION OPERATIONS
       </div>
-      <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(380px,1fr))', gap:16 }}>
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(min(380px,100%),1fr))', gap:16 }}>
         <AnomalyCenter />
         <AlertsPanel />
         <SpacecraftHealth />

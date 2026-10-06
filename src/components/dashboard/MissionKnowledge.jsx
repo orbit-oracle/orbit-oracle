@@ -60,7 +60,7 @@ export default function MissionKnowledge() {
           Insufficient evidence: nothing matches. Try an item ID or a broader term.
         </p>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(300px,1fr))', gap: 12 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(min(300px,100%),1fr))', gap: 12 }}>
           {results.map(k => (
             <div key={k.id} style={{
               background: 'var(--bg3)', border: '1px solid var(--line)',

@@ -17,8 +17,8 @@ export default function AuditLogPage() {
         <h1 style={{ fontSize:26, fontWeight:700 }}>Session Audit Log</h1>
         <p style={{ color:'var(--muted)', marginTop:6 }}>Every question, answer and source is saved. Any session can be replayed for review.</p>
       </div>
-      <div style={{ background:'var(--bg2)', border:'1px solid var(--line)', borderRadius:18, overflow:'hidden' }}>
-        <table style={{ width:'100%', borderCollapse:'collapse' }}>
+      <div className="table-scroll" style={{ background:'var(--bg2)', border:'1px solid var(--line)', borderRadius:18 }}>
+        <table style={{ width:'100%', minWidth:640, borderCollapse:'collapse' }}>
           <thead>
             <tr style={{ borderBottom:'1px solid var(--line)', background:'var(--bg3)' }}>
               {['#','User','Question','Confidence','Sources','Time'].map(h => (
